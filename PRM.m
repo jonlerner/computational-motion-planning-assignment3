@@ -65,8 +65,19 @@ for i = 2:nsamples
     % edge_lengths and nedges variables accordingly.
     %
     
+    [D,I] = sort(distances);
+    for j = 1:min(size(D,2), k)
+        sampleIndex = I(j);
+        sample = samples(:,sampleIndex);
+        if (LocalPlanner(x, sample))
+            nedges = nedges + 1;
+            edges(nedges, :) = [i, sampleIndex];
+            edge_lengths(nedges, :) = Dist(x, sample);
+        end
+    end
+    
     fprintf (1, 'nsamples = %d, nedges = %d\n', i, nedges);
-   
+    
 end
 
 roadmap.samples = samples;
